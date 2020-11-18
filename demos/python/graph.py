@@ -21,7 +21,7 @@ for i in range(2,100):
     id = str(i)
     graph["nodes"].append({"id": id, "label": id})
     # connects the node to a random edge
-    targetId = str(randint(1, i - 1))
+    targetId  = str(randint(1, i - 1))
     graph["edges"].append({"from": id, "to": targetId})
     json_graph = dumps(graph)
     print("i is " + str(i))

@@ -38,7 +38,7 @@ export class InternalWebviewManager {
 	public createNew(expression: string | undefined = undefined) {
 		const webviewPanel = window.createWebviewPanel(
 			debugVisualizer,
-			"Debug Visualizer",
+			"CodeQL Visualizer",
 			ViewColumn.Two,
 			{
 				enableScripts: true,

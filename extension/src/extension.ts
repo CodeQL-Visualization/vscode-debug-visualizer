@@ -17,7 +17,7 @@ import { WebviewServer } from "./webview/WebviewServer";
 import { Config } from "./Config";
 import { VsCodeDebugger } from "./debugger/VsCodeDebugger";
 import { VsCodeDebuggerView } from "./debugger/VsCodeDebuggerView";
-import { EvaluationWatchServiceImpl } from "./EvaluationWatchService";
+import { CodeQLWatchService } from "./EvaluationWatchService";
 import {
 	ComposedEvaluationEngine,
 	JsEvaluationEngine,
@@ -37,19 +37,8 @@ export class Extension {
 	public readonly dispose = Disposable.fn();
 
 	private readonly config = new Config();
-	private readonly debugger = this.dispose.track(new VsCodeDebugger());
-	private readonly debuggerView = this.dispose.track(
-		new VsCodeDebuggerView(this.debugger)
-	);
 
-	public readonly dataSource = new EvaluationWatchServiceImpl(
-		this.debuggerView,
-		new ComposedEvaluationEngine([
-			new ConfiguredEvaluationEngine(this.config),
-			new JsEvaluationEngine(),
-			new GenericEvaluationEngine(),
-		])
-	);
+	public readonly dataSource = new CodeQLWatchService();
 
 	private readonly server = new WebviewServer(this.dataSource, this.config);
 	private readonly views = this.dispose.track(
@@ -72,52 +61,7 @@ export class Extension {
 			)
 		);
 
-		this.dispose.track(
-			commands.registerCommand(
-				"vscode-debug-visualizer.visualizer-set-expression",
-				() => {
-					const editor = window.activeTextEditor;
-					if (!editor) {
-						return;
-					}
-
-					const selection = editor.selection;
-
-					let selectedText;
-					if (selection.isEmpty) {
-						const lineText = editor.document.lineAt(selection.start)
-							.text;
-						const regexp = /`(.*)`/g;
-						selectedText = "";
-						let match;
-						while ((match = regexp.exec(lineText))) {
-							if (
-								match.index <= selection.start.character &&
-								selection.start.character <=
-									match.index + match[0].length
-							) {
-								selectedText = match[1];
-							}
-						}
-					} else {
-						selectedText = editor.document.getText(selection);
-					}
-
-					if (!selectedText) {
-						return;
-					}
-
-					const connections = [...this.server.connections.values()];
-					const latestConnection =
-						connections[connections.length - 1];
-
-					if (latestConnection) {
-						latestConnection.setExpression(selectedText);
-					} else {
-						this.views.createNew(selectedText);
-					}
-				}
-			)
-		);
+		// The API for creating graph
+		this.dataSource.createCodeQLGraph();
 	}
 }

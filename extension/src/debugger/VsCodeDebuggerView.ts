@@ -18,6 +18,7 @@ export class VsCodeDebuggerView {
 	}
 
 	public get activeFrameId(): number | undefined {
+		console.log("move");
 		if (!this._activeDebugSession) {
 			return undefined;
 		} else {

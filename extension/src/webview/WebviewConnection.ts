@@ -28,6 +28,15 @@ export class WebviewConnection {
 	) {
 		let authenticated = false;
 
+		this.watcher = this.dispose.track(
+			evaluationWatchService.createEvaluationWatcher(
+				'',
+				{
+					preferredDataExtractor: undefined,
+				}
+			)
+		);
+
 		function throwIfNotAuthenticated() {
 			if (!authenticated) {
 				throw new RequestHandlingError("Not authenticated");

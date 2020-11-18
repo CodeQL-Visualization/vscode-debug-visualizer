@@ -22,9 +22,9 @@ export class GUI extends React.Component<{ model: Model }> {
 					height: "100%",
 				}}
 			>
-				<div className="part-Header">
+				{/* <div className="part-Header">
 					<VisualizerHeader model={m} />
-				</div>
+				</div> */}
 				<div
 					className="part-Visualizer"
 					style={{ flex: 1, minHeight: 0 }}

@@ -27,6 +27,7 @@ export function createGraph<T>(
 		nodes: [],
 		edges: [],
 	};
+
 	let idCounter = 1;
 	const ids = new Map<T, string>();
 	function getId(item: T): string {
