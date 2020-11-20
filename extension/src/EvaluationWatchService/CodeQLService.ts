@@ -8,8 +8,6 @@ import { Disposable } from "@hediet/std/disposable";
 import { DataExtractorId, GraphNode, GraphVisualizationData } from "@hediet/debug-visualizer-data-extraction";
 import { DataExtractionState, CompletionItem } from "../webviewContract";
 import { hotClass } from "@hediet/node-reload";
-import { VsCodeDebuggerView } from "../debugger/VsCodeDebuggerView";
-import { EvaluationEngine } from "./EvaluationEngine/EvaluationEngine";
 
 @hotClass(module)
 export class CodeQLWatchService implements EvaluationWatchService {
