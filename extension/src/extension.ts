@@ -18,6 +18,7 @@ import { Config } from "./Config";
 import { VsCodeDebugger } from "./debugger/VsCodeDebugger";
 import { VsCodeDebuggerView } from "./debugger/VsCodeDebuggerView";
 import { CodeQLWatchService } from "./EvaluationWatchService";
+import { TaintVisNode } from "./vis-helpers";
 import {
 	ComposedEvaluationEngine,
 	JsEvaluationEngine,
@@ -61,7 +62,38 @@ export class Extension {
 			)
 		);
 
+		const root:TaintVisNode = {
+			uniqueID: "1",
+			label: "foo()",
+			tainted: true,
+			children: []
+		 }
+   
+		 root.children.push({
+			uniqueID: "2",
+			label: "bar()",
+			tainted: false,
+			children: []
+		 })
+   
+		 root.children.push({
+			uniqueID: "3",
+			label: "bar2()",
+			tainted: false,
+			children: []
+		 })
+   
+		 const foo2: TaintVisNode = {
+			uniqueID: "4",
+			label: "foo2()",
+			tainted: true,
+			children: []
+		 }
+   
+		 root.children[0].children.push(foo2);
+		 root.children[1].children.push(foo2);
+
 		// The API for creating graph
-		this.dataSource.createCodeQLGraph();
+		this.dataSource.createCodeQLGraph(root);
 	}
 }

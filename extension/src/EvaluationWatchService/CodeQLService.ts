@@ -8,14 +8,7 @@ import { Disposable } from "@hediet/std/disposable";
 import { DataExtractorId, GraphNode, GraphVisualizationData } from "@hediet/debug-visualizer-data-extraction";
 import { DataExtractionState, CompletionItem } from "../webviewContract";
 import { hotClass } from "@hediet/node-reload";
-//import { TaintVisNode } from "../../../../visualization-helpers/vis-helpers";
-
-type TaintVisNode = {
-    uniqueID: string;
-    label: string;
-    tainted: boolean;
-    children: TaintVisNode[];
-}
+import { TaintVisNode } from "../vis-helpers";
 
 @hotClass(module)
 export class CodeQLWatchService implements EvaluationWatchService {
@@ -39,7 +32,7 @@ export class CodeQLWatchService implements EvaluationWatchService {
       return this.watcher;
     }
     
-    public createCodeQLGraph() {
+    public createCodeQLGraph(root:TaintVisNode) {
         const graph : GraphVisualizationData = {
          kind: { graph: true },
          nodes: [],
@@ -58,37 +51,6 @@ export class CodeQLWatchService implements EvaluationWatchService {
                 data: graph,
             },
       } as DataExtractionState;
-
-      const root:TaintVisNode = {
-         uniqueID: "1",
-         label: "foo()",
-         tainted: true,
-         children: []
-      }
-
-      root.children.push({
-         uniqueID: "2",
-         label: "bar()",
-         tainted: false,
-         children: []
-      })
-
-      root.children.push({
-         uniqueID: "3",
-         label: "bar2()",
-         tainted: false,
-         children: []
-      })
-
-      const foo2: TaintVisNode = {
-         uniqueID: "4",
-         label: "foo2()",
-         tainted: true,
-         children: []
-      }
-
-      root.children[0].children.push(foo2);
-      root.children[1].children.push(foo2);
       
       let open: TaintVisNode[] = [root];
       let gnRoot: GraphNode = {
