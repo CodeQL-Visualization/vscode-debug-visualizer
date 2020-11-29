@@ -60,7 +60,7 @@ export class Extension {
 
 
 	
-			fs.readFile('/Users/cijiexia/Project/vscode-codeql/codeqlVisData.json', 'utf8', (err: any, data: any) =>{
+			fs.readFile('../../../codeqlVisData.json', 'utf8', (err: any, data: any) =>{
 				if (err){
 					console.log(err);
 				} else {
