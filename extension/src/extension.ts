@@ -25,6 +25,8 @@ import {
 	GenericEvaluationEngine,
 	ConfiguredEvaluationEngine,
 } from "./EvaluationWatchService/EvaluationEngine";
+let fs = require('fs');
+let codeQLVisViewOpened: boolean = false;
 
 export function activate(context: ExtensionContext) {
 	context.subscriptions.push(
@@ -53,39 +55,34 @@ export class Extension {
 			i.show();
 		}
 
-		const root:TaintVisNode = {
-			uniqueID: "1",
-			label: "foo()",
-			tainted: true,
-			children: []
-		 }
-   
-		 root.children.push({
-			uniqueID: "2",
-			label: "bar()",
-			tainted: false,
-			children: []
-		 })
-   
-		 root.children.push({
-			uniqueID: "3",
-			label: "bar2()",
-			tainted: false,
-			children: []
-		 })
-   
-		 const foo2: TaintVisNode = {
-			uniqueID: "4",
-			label: "foo2()",
-			tainted: true,
-			children: []
-		 }
-   
-		 root.children[0].children.push(foo2);
-		 root.children[1].children.push(foo2);
 
 		// The API for creating graph
-		this.views.createNew();
-		this.dataSource.createCodeQLGraph(root);
+
+
+	
+			fs.readFile('/Users/cijiexia/Project/vscode-codeql/codeqlVisData.json', 'utf8', (err: any, data: any) =>{
+				if (err){
+					console.log(err);
+				} else {
+
+				let obj = JSON.parse(data); //now it an object
+				console.log(obj);
+
+				if (!codeQLVisViewOpened) {
+					this.views.createNew();
+					codeQLVisViewOpened = true;
+				}
+				
+				this.dataSource.createCodeQLGraph(obj);
+
+			}});
+
+			
+
+
+		
+
+
+		
 	}
 }

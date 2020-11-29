@@ -32,7 +32,7 @@ export class CodeQLWatchService implements EvaluationWatchService {
       return this.watcher;
     }
     
-    public createCodeQLGraph(root:TaintVisNode) {
+    public createCodeQLGraph(graphData: any) {
         const graph : GraphVisualizationData = {
          kind: { graph: true },
          nodes: [],
@@ -52,39 +52,9 @@ export class CodeQLWatchService implements EvaluationWatchService {
             },
       } as DataExtractionState;
       
-      let open: TaintVisNode[] = [root];
-      let gnRoot: GraphNode = {
-         id:root.uniqueID,
-         label:root.label,
-         color:(root.tainted ? "red" : "lightblue"),
-         shape:"box"
-      }
-      graph.nodes.push(gnRoot);
-      while (open.length > 0) {      
-         let current = open.pop();
-         if (current?.children != null && current.children.length > 0) {
-            for (let i = 0; i < current?.children.length; i++) {
-               open.push(current.children[i]);
-               let newNode: GraphNode = {
-                  id:current.children[i].uniqueID,
-                  label:current.children[i].label,
-                  color:(current.children[i].tainted ? "red" : "lightblue"),
-                  shape:"box"
-               }
-               graph.nodes.push(newNode);
-               let newLabel = "";
-               if (current.tainted && current.children[i].tainted) {
-                  newLabel = "taint";
-               } else if (current.tainted && !current.children[i].tainted) {
-                  newLabel = "sanitized";
-               } else if (!current.tainted && current.children[i].tainted) {
-                  newLabel = "spontaneous taint";
-               }
-               graph.edges.push({ from: current.uniqueID, to: current.children[i].uniqueID, label:newLabel});
-            }
-         }
-      }
-        
+      graph.nodes = graphData.nodes;
+      graph.edges = graphData.edges;
+      
       this.watcher._state = result;
     }
 
