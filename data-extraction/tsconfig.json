@@ -10,7 +10,8 @@
 		"declaration": true,
 		"declarationMap": true,
 		"newLine": "LF",
-		"sourceMap": true
+		"sourceMap": true,
+		"composite": true
 	},
 	"include": ["./src/**/*"]
 }
