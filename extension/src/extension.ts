@@ -53,15 +53,6 @@ export class Extension {
 			i.show();
 		}
 
-		this.dispose.track(
-			commands.registerCommand(
-				"vscode-debug-visualizer.new-visualizer",
-				() => {
-					this.views.createNew();
-				}
-			)
-		);
-
 		const root:TaintVisNode = {
 			uniqueID: "1",
 			label: "foo()",
@@ -94,6 +85,7 @@ export class Extension {
 		 root.children[1].children.push(foo2);
 
 		// The API for creating graph
+		this.views.createNew();
 		this.dataSource.createCodeQLGraph(root);
 	}
 }

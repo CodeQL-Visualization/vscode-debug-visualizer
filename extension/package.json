@@ -36,10 +36,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:vscode-debug-visualizer.new-visualizer",
-		"onCommand:vscode-debug-visualizer.visualizer-set-expression",
-		"onDebug",
-		"onWebviewPanel:debugVisualizer"
+		"*"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
