@@ -60,7 +60,7 @@ export class Extension {
 
 
 	
-			fs.readFile('../../../codeqlVisData.json', 'utf8', (err: any, data: any) =>{
+			fs.readFile(__dirname+'/../../../codeqlVisData.json', 'utf8', (err: any, data: any) =>{
 				if (err){
 					console.log(err);
 				} else {
