@@ -36,7 +36,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"*",
+		"onCommand:vscode-debug-visualizer.codeql-visualizer"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -44,6 +45,10 @@
 			{
 				"command": "vscode-debug-visualizer.new-visualizer",
 				"title": "Debug Visualizer: New View"
+			},
+			{
+				"command": "vscode-debug-visualizer.codeql-visualizer",
+				"title": "Debug Visualizer: Visualize CodeQL File"
 			},
 			{
 				"command": "vscode-debug-visualizer.visualizer-set-expression",

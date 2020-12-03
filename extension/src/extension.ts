@@ -1,4 +1,4 @@
-import { window, ExtensionContext, commands } from "vscode";
+import { window, ExtensionContext, commands, extensions } from "vscode";
 import { Disposable } from "@hediet/std/disposable";
 import {
 	enableHotReload,
@@ -29,9 +29,11 @@ let fs = require('fs');
 let codeQLVisViewOpened: boolean = false;
 
 export function activate(context: ExtensionContext) {
-	context.subscriptions.push(
-		hotRequireExportedFn(module, Extension, Extension => new Extension())
-	);
+	const command = 'vscode-debug-visualizer.codeql-visualizer'
+	const commandHandler = (path: string) => {
+		new Extension(path);
+	}
+	context.subscriptions.push(commands.registerCommand(command, commandHandler));
 }
 
 export function deactivate() {}
@@ -48,41 +50,29 @@ export class Extension {
 		new InternalWebviewManager(this.server, this.config)
 	);
 
-	constructor() {
+	constructor(path: string) {
 		if (getReloadCount(module) > 0) {
 			const i = this.dispose.track(window.createStatusBarItem());
 			i.text = "reload" + getReloadCount(module);
 			i.show();
 		}
 
-
 		// The API for creating graph
+		fs.readFile(path, 'utf8', (err: any, data: any) =>{
+			if (err){
+				console.log(err);
+			} else {
 
+			let obj = JSON.parse(data); //now it an object
+			console.log(obj);
 
-	
-			fs.readFile(__dirname+'/../../../codeqlVisData.json', 'utf8', (err: any, data: any) =>{
-				if (err){
-					console.log(err);
-				} else {
-
-				let obj = JSON.parse(data); //now it an object
-				console.log(obj);
-
-				if (!codeQLVisViewOpened) {
-					this.views.createNew();
-					codeQLVisViewOpened = true;
-				}
-				
-				this.dataSource.createCodeQLGraph(obj);
-
-			}});
-
+			if (!codeQLVisViewOpened) {
+				this.views.createNew();
+				codeQLVisViewOpened = true;
+			}
 			
+			this.dataSource.createCodeQLGraph(obj);
 
-
-		
-
-
-		
+		}});
 	}
 }
