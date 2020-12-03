@@ -26,19 +26,8 @@ import {
 	ConfiguredEvaluationEngine,
 } from "./EvaluationWatchService/EvaluationEngine";
 let fs = require('fs');
-let codeQLVisViewOpened: boolean = false;
 
-export function activate(context: ExtensionContext) {
-	const command = 'vscode-debug-visualizer.codeql-visualizer'
-	const commandHandler = (path: string) => {
-		new Extension(path);
-	}
-	context.subscriptions.push(commands.registerCommand(command, commandHandler));
-}
-
-export function deactivate() {}
-
-export class Extension {
+export class CodeQLVisExtension {
 	public readonly dispose = Disposable.fn();
 
 	private readonly config = new Config();
@@ -50,7 +39,7 @@ export class Extension {
 		new InternalWebviewManager(this.server, this.config)
 	);
 
-	constructor(path: string) {
+	public produceVis(path: string) {
 		if (getReloadCount(module) > 0) {
 			const i = this.dispose.track(window.createStatusBarItem());
 			i.text = "reload" + getReloadCount(module);
@@ -66,13 +55,24 @@ export class Extension {
 			let obj = JSON.parse(data); //now it an object
 			console.log(obj);
 
-			if (!codeQLVisViewOpened) {
-				this.views.createNew();
-				codeQLVisViewOpened = true;
-			}
+			this.views.createNew();
 			
 			this.dataSource.createCodeQLGraph(obj);
 
 		}});
 	}
 }
+const extension: CodeQLVisExtension = new CodeQLVisExtension();
+
+export function activate(context: ExtensionContext) {
+	const command = 'vscode-debug-visualizer.codeql-visualizer'
+	const commandHandler = (path: string) => {
+		console.log("Reading from path: " + path);
+		extension.produceVis(path);
+	}
+	context.subscriptions.push(commands.registerCommand(command, commandHandler));
+}
+
+export function deactivate() {}
+
+

@@ -3,6 +3,7 @@ import { WebviewServer } from "./WebviewServer";
 import { Disposable } from "@hediet/std/disposable";
 import { WindowWithWebviewData } from "../webviewContract";
 import { Config } from "../Config";
+import webpack = require("webpack");
 
 export const debugVisualizer = "debugVisualizer";
 
@@ -36,6 +37,11 @@ export class InternalWebviewManager {
 	}
 
 	public createNew(expression: string | undefined = undefined) {
+		// Get rid of the existing webviews since they'll just duplicate our updated visualization
+		for (const panel of this.openedWebviews.keys()) {
+			panel.dispose();
+		}
+
 		const webviewPanel = window.createWebviewPanel(
 			debugVisualizer,
 			"CodeQL Visualizer",
