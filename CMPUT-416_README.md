@@ -3,7 +3,7 @@
 1. Open [Visual Studio Code](https://code.visualstudio.com/download)
 1. Navigate to the Extensions menu (it looks like 4 blocks, one of which has yet to be put in place)
 1. Make sure you don't have an extension called "Debug Visualizer"
-  * If you do, uninstall it
+   * If you do, uninstall it
 1. Click the three horizontal dots in the top right of that menu
 1. Select "Install from VSIX..."
 1. Select the file you downloaded in the first step
