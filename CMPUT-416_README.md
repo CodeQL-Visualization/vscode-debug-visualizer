@@ -1,4 +1,4 @@
-# How to Run
+# Installation Instructions
 1. Download this extension's VSIX file [here](https://drive.google.com/file/d/1anBbOCuIVtiLCy3rwROPmjVB4wl4AyWz/view?usp=sharing).
 1. Open [Visual Studio Code](https://code.visualstudio.com/download).
 1. Navigate to the Extensions menu (it looks like 4 blocks, one of which has yet to be put in place).
